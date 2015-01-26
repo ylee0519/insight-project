@@ -1,0 +1,30 @@
+{% extends "hello.html" %}
+
+{% block css %}
+{{ super() }}
+{% endblock %}
+
+{% block result %}
+      <table class="table table-hover">
+        <tr>
+          <th>Name</th>
+          <th>Short Intro</th>
+          <th colspan='2'>Stage</th>
+          <th>Score</th>
+        </tr>
+        {% for startup in startups %}
+        <tr>
+          <td><a href="{{ startup['homepage'] }}">{{ startup['name'] }}</a></td>
+          <td>{{ startup['short_intro'] }}</td>
+          <td colspan='2'>{{ startup['stage'] }}</td>
+          <td>{{ startup['score'] }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+{% endblock %}
+
+{% block footer %}
+      <footer class="footer">
+        <p>&copy; Yun Lee</p>
+      </footer>
+{% endblock %}

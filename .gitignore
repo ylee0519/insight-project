@@ -1,0 +1,9 @@
+.DS_Store
+.api_key
+.crunchbase_api_key
+*.png
+.cache/
+.ipynb_checkpoints/
+bin/
+json/
+versionone/
