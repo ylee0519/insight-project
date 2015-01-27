@@ -68,4 +68,4 @@ def unexpected_error(e):
     return 'Sorry, unexpected error: {}'.format(e), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=4286, debug=True)
