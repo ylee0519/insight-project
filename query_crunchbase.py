@@ -63,7 +63,7 @@ if __name__ == '__main__':
     # Done this way because there's an API rate limit (2500 calls/day)
     active_startups = active_startups[(active_startups.seed_funding >= 1000000) & (active_startups.employee >= 5)]
     print len(active_startups), len(active_startups[active_startups.stage.isin(['A', 'B', 'C', 'Late'])])
-    # pdb.set_trace()
+    pdb.set_trace()
 
     active_startups_CB = []
     failed_attempts = 0
@@ -79,10 +79,10 @@ if __name__ == '__main__':
             print '%4d %10d %s FAILED' % (len(active_startups_CB), d[u'id'], time.ctime())
 
         sys.stdout.flush()
-        time.sleep(5)
+        time.sleep(10)
 
     print 'Number of failed requests = %d' % failed_attempts
 
-    path = '5yo_active_startups_CB_Jan22.json'
+    path = 'json/5yo_active_startups_CB_1M.json'
     with open(path, 'wb') as f:
         json.dump(active_startups_CB, f, -1)

@@ -17,10 +17,52 @@
           <td><a href="{{ startup['homepage'] }}">{{ startup['name'] }}</a></td>
           <td>{{ startup['short_intro'] }}</td>
           <td colspan='2'>{{ startup['stage'] }}</td>
-          <td>{{ startup['score'] }}</td>
+          {% if startup['score'] >= 60 %}
+          <td style='color: green'><b>{{ startup['score'] }}</b></td>
+          {% else %}
+          <td style='color: red'><b>{{ startup['score'] }}</b></td>
+          {% endif %}
         </tr>
         {% endfor %}
       </table>
+{% endblock %}
+
+{% block pagination %}
+      <nav>
+        <ul class="pagination">
+        {% if pagination.page == 1 %}
+        <li class="disabled">
+          <a href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% else %}
+        <li>
+          <a href="{{ url_for('result', industry=industry, page=(pagination.page-1)) }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% endif %}
+
+        {% for page in pagination.iter_pages %}
+          {% if page %}
+            {% if page == pagination.page %}
+            <li class="active"><a href="{{ url_for('result', industry=industry, page=page) }}">{{ page }}<span class="sr-only">(current)</span></a></li>
+            {% else %}
+            <li><a href="{{ url_for('result', industry=industry, page=page) }}">{{ page }}</a></li>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+
+        {% if pagination.has_next %}
+        <li>
+          <a href="{{ url_for('result', industry=industry, page=(pagination.page+1)) }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% endif %}
+        </ul>
+      </nav>
 {% endblock %}
 
 {% block footer %}
