@@ -21,8 +21,8 @@ def result(industry):
     startups.Homepage, 
     startups.ShortIntro, 
     startups.Stage,
-    scores.Score
-    FROM startups INNER JOIN scores ON startups.Id = scores.Id 
+    prediction.Score
+    FROM startups INNER JOIN prediction ON startups.Id = prediction.Id 
     WHERE startups.%s = 1;
     ''' % industry.capitalize()
 
@@ -32,13 +32,14 @@ def result(industry):
     startups = []
 
     for _, row in enumerate(rows):
-        startup = {'name': row[0],
-            'homepage': row[1],
-            'short_intro': row[2],
-            'stage': row[3] if row[3] != 'Pre Series A' else 'Pre A',
-            'score': row[4]
-            }
-        startups.append(startup)
+        if row[3] == 'Pre Series A':
+            startup = {'name': row[0],
+                'homepage': row[1],
+                'short_intro': row[2],
+                'stage': 'Pre A',
+                'score': row[4]
+                }
+            startups.append(startup)
 
     db.close()
 

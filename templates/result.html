@@ -12,7 +12,7 @@
         <tr>
           <th>Name</th>
           <th>Short Intro</th>
-          <th>Stage</th>
+          <!-- <th>Stage</th> -->
           <th>Score</th>
         </tr>
         </thead>
@@ -21,12 +21,8 @@
         <tr>
           <td><a href="{{ startup['homepage'] }}">{{ startup['name'] }}</a></td>
           <td>{{ startup['short_intro'] }}</td>
-          <td>{{ startup['stage'] }}</td>
-          {% if startup['score'] >= 60 %}
-          <td style='color: green'><b>{{ startup['score'] }}</b></td>
-          {% else %}
-          <td style='color: red'><b>{{ startup['score'] }}</b></td>
-          {% endif %}
+          <!-- <td>{{ startup['stage'] }}</td> -->
+          <td style="text-align: center">{{ startup['score'] }}</td>
         </tr>
         {% endfor %}
         </tbody>
@@ -45,7 +41,9 @@
     <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap.js') }}"></script>
     <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
-        $("#startup-table").dataTable();
+        $("#startup-table").dataTable( {
+          "order": [[ 2, "desc" ]]
+        } );
         if (!$(".pagination").hasClass("pagination-sm")) {
           $(".pagination").addClass("pagination-sm");
         };
