@@ -1,22 +1,27 @@
 {% extends "hello.html" %}
 
 {% block css %}
-{{ super() }}
+    {{ super() }}
+    <link href="{{ url_for('static', filename='css/dataTables.bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/result.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block result %}
-      <table class="table table-hover">
+      <table id="startup-table" class="table table-hover">
+        <thead>
         <tr>
           <th>Name</th>
           <th>Short Intro</th>
-          <th colspan='2'>Stage</th>
+          <th>Stage</th>
           <th>Score</th>
         </tr>
+        </thead>
+        <tbody>
         {% for startup in startups %}
         <tr>
           <td><a href="{{ startup['homepage'] }}">{{ startup['name'] }}</a></td>
           <td>{{ startup['short_intro'] }}</td>
-          <td colspan='2'>{{ startup['stage'] }}</td>
+          <td>{{ startup['stage'] }}</td>
           {% if startup['score'] >= 60 %}
           <td style='color: green'><b>{{ startup['score'] }}</b></td>
           {% else %}
@@ -24,49 +29,27 @@
           {% endif %}
         </tr>
         {% endfor %}
+        </tbody>
       </table>
-{% endblock %}
-
-{% block pagination %}
-      <nav>
-        <ul class="pagination">
-        {% if pagination.page == 1 %}
-        <li class="disabled">
-          <a href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        {% else %}
-        <li>
-          <a href="{{ url_for('result', industry=industry, page=(pagination.page-1)) }}" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        {% endif %}
-
-        {% for page in pagination.iter_pages %}
-          {% if page %}
-            {% if page == pagination.page %}
-            <li class="active"><a href="{{ url_for('result', industry=industry, page=page) }}">{{ page }}<span class="sr-only">(current)</span></a></li>
-            {% else %}
-            <li><a href="{{ url_for('result', industry=industry, page=page) }}">{{ page }}</a></li>
-            {% endif %}
-          {% endif %}
-        {% endfor %}
-
-        {% if pagination.has_next %}
-        <li>
-          <a href="{{ url_for('result', industry=industry, page=(pagination.page+1)) }}" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-        {% endif %}
-        </ul>
-      </nav>
 {% endblock %}
 
 {% block footer %}
       <footer class="footer">
         <p>&copy; Yun Lee</p>
       </footer>
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+    <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/dataTables.bootstrap.js') }}"></script>
+    <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $("#startup-table").dataTable();
+        if (!$(".pagination").hasClass("pagination-sm")) {
+          $(".pagination").addClass("pagination-sm");
+        };
+        $(".dataTables_length select").css("width", "60px");
+    } );
+    </script>
 {% endblock %}

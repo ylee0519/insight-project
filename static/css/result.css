@@ -1,0 +1,6 @@
+/* Override default settings */
+@media screen and (max-width: 767px) {
+  div.dataTables_filter {
+    visibility: hidden;
+  }
+}

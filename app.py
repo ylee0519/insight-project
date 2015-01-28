@@ -1,16 +1,21 @@
+#!/usr/bin/python
+
 import json
 import os
 
 from datastore import local
 from flask import *
 
-from flask_utils import Pagination
-
 app = Flask(__name__)
 
 PER_PAGE = 20
 
-def get_statups_for_page(industry, page, per_page):
+@app.route('/')
+def hello():
+    return render_template('hello.html')
+
+@app.route('/<industry>')
+def result(industry):
     db = local()
     q = '''SELECT startups.Name, 
     startups.Homepage, 
@@ -23,36 +28,21 @@ def get_statups_for_page(industry, page, per_page):
 
     db.cur.execute(q)
     rows = db.cur.fetchall()
+    count = len(rows)
     startups = []
 
-    for _, row in enumerate(rows[(page-1)*per_page:page*per_page]):
+    for _, row in enumerate(rows):
         startup = {'name': row[0],
             'homepage': row[1],
             'short_intro': row[2],
             'stage': row[3] if row[3] != 'Pre Series A' else 'Pre A',
             'score': row[4]
             }
-
         startups.append(startup)
 
     db.close()
 
-    return startups, len(rows)
-
-@app.route('/')
-def hello():
-    return render_template('hello.html')
-
-@app.route('/<industry>', defaults={'page': 1})
-@app.route('/<industry>/page/<int:page>')
-def result(industry, page):
-    startups, count = get_statups_for_page(industry, page, PER_PAGE)
-    if not startups and page != 1:
-        abort(404)
-    pagination = Pagination(page, PER_PAGE, count)
-
     return render_template('result.html',
-        pagination=pagination,
         industry=industry,
         startups=startups
         )
@@ -68,4 +58,4 @@ def unexpected_error(e):
     return 'Sorry, unexpected error: {}'.format(e), 500
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=4286, debug=True)
+    app.run(host='127.0.0.1', port=5000, debug=True)

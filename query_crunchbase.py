@@ -49,9 +49,8 @@ def do_query(startup):
             u'news': _d[u'data'][u'relationships'].get(u'news')
         }
 
-    except KeyError as e:
-        print e
-        sys.exit(1)
+    except:
+        return {u'id': startup.id}
 
     return d
 
@@ -63,7 +62,7 @@ if __name__ == '__main__':
     # Done this way because there's an API rate limit (2500 calls/day)
     active_startups = active_startups[(active_startups.seed_funding >= 1000000) & (active_startups.employee >= 5)]
     print len(active_startups), len(active_startups[active_startups.stage.isin(['A', 'B', 'C', 'Late'])])
-    pdb.set_trace()
+    # pdb.set_trace()
 
     active_startups_CB = []
     failed_attempts = 0
