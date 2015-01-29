@@ -12,7 +12,8 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    
     <!-- Custom styles for this template -->
     {% block css %}
     <link href="{{ url_for('static', filename='css/hello.css') }}" rel="stylesheet">
@@ -26,12 +27,12 @@
       <div class="header">
         <nav>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="{{ url_for('hello') }}">Home</a></li>
+            <li role="presentation"><a href="{{ url_for('hello') }}">Home</a></li>
             <li role="presentation"><a href="#">Slides</a></li>
             <li role="presentation"><a href="#">GitHub</a></li>
           </ul>
         </nav>
-        <h3 class="text-muted"><a href="{{ url_for('hello') }}">UnicornHuntr</a></h3>
+        <h3 class="text-muted"><a href="{{ url_for('hello') }}" style="text-decoration: none">UnicornHuntr</a></h3>
       </div>
 
       <div class="jumbotron">
@@ -42,17 +43,21 @@
             Industry <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="{{ url_for('result', industry='mobile') }}">Mobile</a></li>
+            <li><a href="{{ url_for('result', industry='advertising') }}">Advertising</a></li>
+            <li><a href="{{ url_for('result', industry='analytics') }}">Analytics</a></li>
             <li><a href="{{ url_for('result', industry='ecommerce') }}">E-commerce</a></li>
-            <li><a href="{{ url_for('result', industry='social') }}">Social Networking</a></li>
+            <li><a href="{{ url_for('result', industry='education') }}">Education</a></li>
+            <li><a href="{{ url_for('result', industry='enterprise') }}">Enterprise software</a></li>
+            <li><a href="{{ url_for('result', industry='healthcare') }}">Healthcare</a></li>
+            <li><a href="{{ url_for('result', industry='marketing') }}">Marketing</a></li>
+            <li><a href="{{ url_for('result', industry='media') }}">Media</a></li>
+            <li><a href="{{ url_for('result', industry='mobile') }}">Mobile</a></li>
+            <li><a href="{{ url_for('result', industry='social') }}">Social Netwking</a></li>
           </ul>
         </div>
       </div>
 
       {% block result %}
-      {% endblock %}
-
-      {% block pagination %}
       {% endblock %}
 
       {% block footer %}

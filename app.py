@@ -8,8 +8,6 @@ from flask import *
 
 app = Flask(__name__)
 
-PER_PAGE = 20
-
 @app.route('/')
 def hello():
     return render_template('hello.html')

@@ -15,7 +15,7 @@ db = local()
 q = '''DROP TABLE IF EXISTS startups;'''
 db.cur.execute(q)
 
-q = '''CREATE TABLE startups (Id INT, Name VARCHAR(255), Homepage VARCHAR(255), Description TEXT, ShortIntro TEXT, Stage VARCHAR(12), Location VARCHAR(255), Mobile TINYINT(1), Ecommerce TINYINT(1), Social TINYINT(1));'''
+q = '''CREATE TABLE startups (Id INT, Name VARCHAR(255), Homepage VARCHAR(255), Description TEXT, ShortIntro TEXT, Stage VARCHAR(12), Location VARCHAR(255), Mobile TINYINT(1), Ecommerce TINYINT(1), Social TINYINT(1), Enterprise TINYINT(1), Marketing TINYINT(1), Analytics TINYINT(1), Healthcare TINYINT(1), Media TINYINT(1), Advertising TINYINT(1), Education TINYINT(1));'''
 db.cur.execute(q)
 
 for x in active_startups_CB:
@@ -32,8 +32,15 @@ for x in active_startups_CB:
         mobile = int(int(startups.at[i, 'mobile']) == 1)
         ecommerce = int(int(startups.at[i, 'e-commerce']) == 1)
         social = int(int(startups.at[i, 'social networking']) == 1)
+        enterprise = int(int(startups.at[i, 'enterprise software']) == 1)
+        marketing = int(int(startups.at[i, 'marketing']) == 1)
+        analytics = int(int(startups.at[i, 'analytics']) == 1)
+        healthcare = int(int(startups.at[i, 'healthcare']) == 1)
+        media = int(int(startups.at[i, 'media']) == 1)
+        advertising = int(int(startups.at[i, 'advertising']) == 1)
+        education = int(int(startups.at[i, 'education']) == 1)
 
-        q = '''INSERT INTO startups VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'''
+        q = '''INSERT INTO startups VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'''
         db.cur.execute(q, (
             index, 
             name,
@@ -44,7 +51,14 @@ for x in active_startups_CB:
             loc,
             mobile,
             ecommerce,
-            social))
+            social,
+            enterprise,
+            marketing,
+            analytics,
+            healthcare,
+            media,
+            advertising,
+            education))
 
 db.con.commit()
 db.close()
