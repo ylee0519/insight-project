@@ -28,16 +28,19 @@ def populate_prediction_table(startups):
 if __name__ == '__main__':
     # Pre-processing of data
     startups = pd.read_csv('5yo_startups_cleaned.csv')
+
     active_startups = startups.drop(startups.index[startups.stage == 'Exited'])
-    active_startups['age'] = pd.to_datetime(datetime(2015, 1, 1)) - pd.to_datetime(active_startups.est_founding_date)
-    
-    two_year_olds = active_startups[active_startups.age <= timedelta(365*2)].copy()
-    toddlers = active_startups[active_startups.age > timedelta(365*2)].copy()
+    active_startups['age'] = (pd.to_datetime(datetime(2015, 1, 1)) - pd.to_datetime(active_startups.est_founding_date)).astype('timedelta64[D]')
+    active_startups['employee_growth'] = active_startups['employee'].div(active_startups['age'])
+
+    toddlers = active_startups[active_startups.age > (365*2)].copy()
+    two_year_olds = active_startups[active_startups.age <= (365*2)].copy()
 
     y_train = toddlers.stage.isin(['A', 'B', 'C', 'Late']).astype(int)
     X_train = toddlers.drop([
         'age',
-        'business_models', 
+        'business_models',
+        'employee', 
         'employee_count', 
         'est_founding_date', 
         'funding', 
@@ -52,13 +55,13 @@ if __name__ == '__main__':
         axis=1)
 
     # Train and test the model with all the data
-    clf = RandomForestClassifier(n_jobs=2)
-    clf = clf.fit(X_train, y_train)
+    clf = RandomForestClassifier(min_samples_split=1, max_features='log2', n_estimators=1000, n_jobs=-1).fit(X_train, y_train)
 
     y_test = two_year_olds.stage.isin(['A', 'B', 'C', 'Late']).astype(int)
     X_test = two_year_olds.drop([
         'age',
-        'business_models', 
+        'business_models',
+        'employee',
         'employee_count', 
         'est_founding_date', 
         'funding', 
@@ -74,7 +77,7 @@ if __name__ == '__main__':
 
     print clf.score(X_test, y_test)
 
-    pred = 100*clf.predict_proba(X_test).astype(float)
+    pred = 100*clf.predict_proba(X_test)
 
     two_year_olds[u'score'] = pd.Series(pred[:, 1].astype(int), index=two_year_olds.index)
     
