@@ -1,7 +1,11 @@
 .DS_Store
 .api_key
 .crunchbase_api_key
+.mysql_root_passwd
+Insight2015A.pem
+insight2015a.sql
 *.png
+*.pyc
 .cache/
 .ipynb_checkpoints/
 bin/
