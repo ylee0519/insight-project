@@ -4,10 +4,12 @@ import MySQLdb as mdb
 import os
 import sys
 
+PASSWORD = open('.mysql_root_passwd').read()
+
 class local(object):
     def __init__(self, verbose=False):
         try:
-            self.con = mdb.connect(host='localhost', user='root', db='insight_proj', charset='utf8', use_unicode=True)
+            self.con = mdb.connect(host='localhost', user='root', passwd=PASSWORD, db='insight_proj', charset='utf8', use_unicode=True)
             self.cur = self.con.cursor()
             if verbose:
                 print "Connection is successful"
