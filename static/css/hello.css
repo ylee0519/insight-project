@@ -24,6 +24,11 @@ body {
   line-height: 40px;
 }
 
+.fb-blue > li a:hover {
+  background-color: transparent;
+  border: 2px solid #8b9dc3;
+}
+
 /* Custom page footer */
 .footer {
   padding-top: 10px;
