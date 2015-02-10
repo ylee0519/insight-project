@@ -8,7 +8,7 @@ import pdb
 from datastore import local
 
 startups = pd.read_csv('5yo_startups_cleaned.csv')
-active_startups_CB = json.load(open('json/5yo_active_startups_CB_1M.json'))
+active_startups_CB = json.load(open('json/two_year_olds_CB.json'))
 print len(startups), len(active_startups_CB)
 
 db = local()

@@ -96,7 +96,7 @@ if __name__ == '__main__':
     plt.style.use('fivethirtyeight')
     plt.scatter(n_startups, funding_rate, s=100, alpha=0.5)
     plt.axhline(y=global_funding_rate, color='k', linestyle='--', linewidth=0.5)
-    plt.xlabel('Number of startups in an industry')
+    plt.xlabel('Number of new startups in an industry')
     plt.ylabel('Predicted funding rate (%)')
     plt.title('Predicted funding rate by industry')
     plt.savefig('funding_rate_by_industry.png', dpi=400, bbox_inches='tight')
