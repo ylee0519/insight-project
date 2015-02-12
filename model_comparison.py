@@ -45,6 +45,30 @@ def standardize_data(X_train, X_cv, i_cols):
 
 def main(X, y, ver):
     # Try random forest
+    tuned_params = {'n_estimators': [10, 30, 100, 300, 1000]}
+    random_forest_clf = GridSearchCV(RandomForestClassifier(), tuned_params, cv=5)
+    random_forest_clf.fit(X, y)
+
+    mean_score = []
+    std = []
+    for x in random_forest_clf.grid_scores_:
+        mean_score.append(np.mean(x[2]))
+        std.append(np.std(x[2]))
+
+    plt.figure()
+    plt.style.use('ggplot')
+
+    plt.errorbar(tuned_params['n_estimators'], mean_score, yerr=std, fmt='-o')
+    plt.xlim((0, 1010))
+    plt.ylim((0.6, 1))
+    plt.xlabel('Number of trees')
+    plt.ylabel('Mean Accuracy')
+    plt.title('Determining Optimal # of Trees')
+    plt.legend(loc="lower right")
+
+    path_to_fig = 'parameter_tuning_v%d.png' % ver
+    plt.savefig(path_to_fig, dpi=400, bbox_inches='tight')
+
     random_forest_clf = RandomForestClassifier(n_estimators=1000, n_jobs=-1)
     cv_scores = cross_val_score(random_forest_clf, X, y, cv=5, n_jobs=2)
     print 'Accuracy: Mean = %.2f, Std = %.2f' % (np.mean(cv_scores), np.std(cv_scores))
@@ -100,7 +124,6 @@ def main(X, y, ver):
 
     path_to_fig = 'roc_curve_v%d.png' % ver
     plt.savefig(path_to_fig, dpi=400, bbox_inches='tight')
-
 
 if __name__ == '__main__':
     # Pre-processing

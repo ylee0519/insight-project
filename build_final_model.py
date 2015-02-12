@@ -53,7 +53,10 @@ if __name__ == '__main__':
         'angel funding'], 
         axis=1)
 
-    clf = RandomForestClassifier(n_estimators=1000, n_jobs=-1).fit(X, y)
+    print '%.2f%% in the training set was funded' % (float(sum(y)) / len(y) * 100)
+
+    clf = RandomForestClassifier(n_estimators=1000, oob_score=True, n_jobs=-1).fit(X, y)
+    print 'OOB error = %.2f' % clf.oob_score_
 
     y_test = two_year_olds.stage.isin(['A', 'B', 'C', 'Late']).astype(int)
     X_test = two_year_olds.drop([
@@ -72,12 +75,14 @@ if __name__ == '__main__':
         'angel funding'],
         axis=1)
 
-    print clf.score(X_test, y_test)
+    print '%.2f%% in the test set was funded' % (float(sum(y_test)) / len(y_test) * 100)
 
     pred = 100*clf.predict_proba(X_test)
 
     two_year_olds[u'score'] = pd.Series(pred[:, 1].astype(int), index=two_year_olds.index)
     two_year_olds[u'pred'] = pd.Series(clf.predict(X_test), index=two_year_olds.index)
+
+    print np.median(two_year_olds[two_year_olds.stage.isin(['A', 'B', 'C', 'Late'])][u'score'])
 
     n_startups = np.zeros((78, 1))
     funding_rate = np.zeros((78, 1))
@@ -102,4 +107,4 @@ if __name__ == '__main__':
     plt.savefig('funding_rate_by_industry.png', dpi=400, bbox_inches='tight')
 
     # Port the results to MySQL
-    populate_prediction_table(two_year_olds)
+    # populate_prediction_table(two_year_olds)
